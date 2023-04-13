@@ -118,9 +118,10 @@ RUN set -eux; \
 		1D98867E82982C8FE0ABC25F9B69B3109D3BB7B0 \
 	; \
 	gpg --batch --verify mediawiki.tar.gz.sig mediawiki.tar.gz; \
-	tar -xf mediawiki.tar.gz; \
-        mv mediawiki-1.39.3 mediawiki; \
-        chown apache:apache mediawiki; \
+        mkdir /var/lib/mediawiki; \
+        tar -xf mediawiki.tar.gz -C /var/lib/mediawiki --strip-components=1; \
+	ln -s /var/lib/mediawiki /var/www/html/mediawiki; \
+        chown -R apache:apache /var/lib/mediawiki /var/www/html/mediawiki; \
 	gpgconf --kill all; \
 	rm -r "$GNUPGHOME" mediawiki.tar.gz.sig mediawiki.tar.gz; \
 	chown -R apache:apache mediawiki/extensions mediawiki/skins mediawiki/cache mediawiki/images /var/www/html; \
