@@ -8,6 +8,7 @@ function k8s_ops() {
   terraform output -raw kube_config >$basedir/aks/config
   export KUBECONFIG=$basedir/aks/config
   chmod 400 $basedir/aks/config
+  sleep 10
 
   kubectl get nodes -o wide
   kubectl create ns mediawiki
