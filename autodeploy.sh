@@ -13,7 +13,7 @@ function k8s_ops() {
   kubectl get nodes -o wide
   kubectl create ns mediawiki
   kubectl config set-context --current --namespace=mediawiki
-  kubectl create secret generic mariadb --from-literal=root_pass=secret --from-literal=wiki_user_pass=wiki_pass123
+  kubectl create secret generic mariadb --from-literal=root_pass=secret --from-literal=wiki_user_pass=wiki_pass123 -n mediawiki
 }
 
 function terraform_ops() {
