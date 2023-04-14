@@ -196,7 +196,12 @@ MariaDB Setup
 
 >NOTE: Please do not close the page. Keep it open and perform step in the backend.
 
-- Copy the `LocalSettings.php` to the directory under `mediawiki` pod running on K8s cluster. This is one of the manual step to be done.
+- Copy the `LocalSettings.php` to the directory under `mediawiki` pod running on K8s cluster. Also change the user and group to `apache` for file `LocalSettings.php` at `/var/lib/mediawiki` with below command inside pod. This is one of the manual step to be done.
+
+```
+kubectl cp LocalSettings.php mediawiki-b5f6d4487-h2p5x:/var/lib/mediawiki/ -n mediawiki
+kubectl exec -it -n mediawiki mediawiki-b5f6d4487-h2p5x -- bash -c "chown apache:apache /var/lib/mediawiki/LocalSettings.php"
+```
 
 ![mw_localsettings_copy](./images/mw_localsettings_copy.png "mw_localsettings_pod_copy")
 
