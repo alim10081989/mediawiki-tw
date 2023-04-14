@@ -134,6 +134,16 @@ Screenshot 1:
 
 >NOTE: Kindly note down the URL provided as it will be used in the UI steps 
 
+- Kindly verify the user "wiki" is created within "wikidatabase" under MariaDB pod. Use the root password as defined within script in second step.
+
+Screenshot 1:
+
+![mariadb_verify](./images/mariadb_verify.png)
+
+Screenshot 2:
+
+![mariadb_user_verify](./images/mariadb_wiki_userverify.png)
+
 ---
 ## MediaWiki WebPage UI Steps
 ---
