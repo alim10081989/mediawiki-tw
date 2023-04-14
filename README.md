@@ -80,6 +80,12 @@ Screenshot 2:
 
 - In second step, kubernetes steps are done where the config file for the provisioned AKS cluster is set with environment variable `KUBECONFIG` and namespace `mediawiki` with secret named `mariadb` created within the namespace . Change the root and user password as per requirement.
 
+Below code block under `k8s_ops` function creates the secret named `mariadb`. Update the password details as per requirement. Updating the secret to other names except for the mentioned i.e. `mariadb` will require changes within helm chart values file [mariadb/values.yaml](./charts/mariadb/values.yaml)
+
+```
+kubectl create secret generic mariadb --from-literal=root_pass=secret --from-literal=wiki_user_pass=wiki_pass123 -n mediawiki
+```
+
 Screenshot 1:
 
 
@@ -108,9 +114,10 @@ Screenshot 3:
 ![acr_mediawiki_image](./images/acr_mw_img.png "acr_mediawiki_image")
 
 Screenshot 4:
+
 ![acr_mariadb_image](./images/acr_mariadb_img.png)
 
-Screenshot 4:
+Screenshot 5:
 
 ![acr_tasks](./images/acr_tasks.png)
 
@@ -132,7 +139,9 @@ Screenshot 1:
 
 !["helm_charts_deploy"](./images/helm_charts_deploy.png)
 
+
 >NOTE: Kindly note down the URL provided as it will be used in the UI steps 
+
 
 - Kindly verify the user `wiki` is created within `wikidatabase` under MariaDB pod. Use the root password as defined within script in second step.
 
@@ -151,14 +160,21 @@ Screenshot 2:
 - Hit the url provided to access the `mediawiki`
 
 ```
-http://${ingress_ip}/mediawiki
+http://${ingress_ip}/mediawiki/
 ```
 
 Screenshot:
 
 ![mw_init_page](./images/mw_init_page.png)
 
-- Click on `set up the wiki` -> `Continue` and set the backend with MariaDB database configured within the AKS cluster.
+- Click on `set up the wiki` -> `Continue` and set the backend with MariaDB database configured within the AKS cluster. Below details need to be provided .
+
+    - Database Host i.e. `mariadb`
+    - Database Name i.e. `wikidatabase`
+    - User account for Installation `wiki`
+    - User password i.e. `wiki_pass123`
+
+>NOTE: This are the values currently provided as an example. Update the secret creation command in shell script with the required password for user and root. Update the `non-root` username under helm charts located at [mariadb/values.yaml](./charts/mariadb/values.yaml) 
 
 ![mv_install_page](./images/mwinstall_page.png)
 
@@ -166,7 +182,7 @@ MariaDB Setup
 
 ![mw_db_setup](./images/mw_db_setup.png)
 
-- Configure the `mediawiki` title name and `admin` password and click `I am bored already,continue with Install`.
+- Configure the `mediawiki` title name and `Administrator` account with `username` &  `password` and click `I am bored already,continue with Install`.
 
 ![mw_title_setup](./images/mw_title_config.png)
 

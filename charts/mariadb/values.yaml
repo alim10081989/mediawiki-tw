@@ -17,6 +17,13 @@ fullnameOverride: ""
 strategy:
   type: RollingUpdate
 
+env:
+  db_name: wikidatabase
+  db_user: wiki
+  
+secret:
+  name: mariadb
+
 service:
   type: ClusterIP
   port: 3306

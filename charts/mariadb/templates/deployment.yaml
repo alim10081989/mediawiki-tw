@@ -28,14 +28,14 @@ spec:
             - name: MARIADB_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mariadb
+                  name: {{ .Values.secret.name }}
                   key: root_pass
             - name: MARIADB_DATABASE
-              value: wikidatabase
+              value: {{ .Values.env.db_name }}
             - name: MARIADB_USER
-              value: wiki
+              value: {{ .Values.env.db_user }}
             - name: MARIADB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mariadb
+                  name: {{ .Values.secret.name }}
                   key: wiki_user_pass
