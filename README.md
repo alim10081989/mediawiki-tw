@@ -19,7 +19,7 @@ Below setups need to be available
 ---
 Refer [link](https://www.mediawiki.org/wiki/Compatibility#:~:text=MediaWiki%20is%20broadly%20compatible%20with,a%20good%20choice%20as%20well.) for version compatibility details
 
-As per link, ```MediaWiki support for PHP 8.0 and above started with 1.39.0```, hence we will be using php:8.0-apache as our base image to configure mediawiki 1.39.3.
+As per link, ```MediaWiki support for PHP 8.0 and above started with 1.39.0```, hence we will be using php:8.1-apache as our base image to configure mediawiki 1.39.3.
 
 ## Directory Layout
 ---
