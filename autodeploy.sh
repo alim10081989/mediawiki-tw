@@ -46,17 +46,13 @@ function build_images() {
   services=('mediawiki' 'mariadb')
 
   for svc in ${services[@]}; do
-    cd $basedir/$svc
+    cd $basedir/docker/$svc
     echo -e "INFO: Building $svc image"
     if [ $svc == "mediawiki" ]; then
       az acr build --registry $ACR_NAME --image mediawiki:1.39.3 .
     else
       az acr build --registry $ACR_NAME --image mariadb:10.11.2 .
     fi
-
-    cd $basedir/$svc/k8s_yaml
-    kubectl apply -f deployment.yaml -n mediawiki
-    kubectl apply -f svc.yaml -n mediawiki
   done
 }
 
@@ -99,16 +95,21 @@ function helm_deploy() {
   export client_secret=$(jq -r .password sp_thghtwrks.json)
 
   ## Push to ACR Registry ##
-  cd $basedir/helmcharts
+  cd $basedir/charts
   helm registry login $ACR_NAME.azurecr.io --username $app_id --password $client_secret
-  helm push mediawiki-0.1.0.tgz oci://$ACR_NAME.azurecr.io/helm
-  helm push mariadb-0.1.0.tgz oci://$ACR_NAME.azurecr.io/helm
 
-  ## Deploy Helm Charts ##
-  helm install mariadb --namespace mediawiki oci://$ACR_NAME.azurecr.io/helm/mariadb
-  helm install mediawiki --namespace mediawiki oci://$ACR_NAME.azurecr.io/helm/mediawiki
+  services=('mediawiki' 'mariadb')
 
+  for svc in ${services[@]}; do
+    cd $basedir/charts/$svc
+    echo -e "INFO: Generating helm chart package for $svc"
+    helm package .
+    helm push $svc-0.1.0.tgz oci://$ACR_NAME.azurecr.io/helm
+    echo -e "INFO: Deploying helm chart package for $svc"
+    helm install $svc --namespace mediawiki oci://$ACR_NAME.azurecr.io/helm/$svc
+  done
 }
+
 basedir=$(pwd)
 subscription_id=$1
 
