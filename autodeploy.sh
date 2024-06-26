@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Testing cherry-pick functionality
+##### Testing cherry-pick functionality
 function k8s_ops() {
 
   ## Set Kubernetes Configuration and Create MariaDB secret ##
